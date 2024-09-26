@@ -7,7 +7,7 @@
 .yarn/install-state.gz
 
 .next
-.DS_Store
+
 # testing
 /coverage
 

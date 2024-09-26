@@ -1,0 +1,19 @@
+# docker-compose.yaml 
+ 
+version: "3.8" 
+ 
+services: 
+  nextjs-app: 
+    container_name: nextjs-app 
+    restart: unless-stopped 
+    build: 
+      context: . 
+      dockerfile: Dockerfile
+    # volumes: 
+    #   - .:/app 
+    #   - /app/.next 
+    #   - /app/node_modules 
+    ports: 
+      - 3000:3000 
+    # env_file: 
+    #   - ./.env

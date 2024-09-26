@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Change to the directory containing Docker-related files
-cd ./docker
+# # Change to the directory containing Docker-related files
+# cd ./docker
 
 # Ask for confirmation before pruning Docker system
 echo "This will remove all stopped containers, unused networks, dangling images, and build caches."

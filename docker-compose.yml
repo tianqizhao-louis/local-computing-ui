@@ -8,11 +8,11 @@ services:
     restart: unless-stopped 
     build: 
       context: . 
-      dockerfile: Dockerfile
-    # volumes: 
-    #   - .:/app 
-    #   - /app/.next 
-    #   - /app/node_modules 
+      dockerfile: dev.Dockerfile
+    volumes: 
+      - ./paws:/app 
+      - /app/.next 
+      - /app/node_modules 
     ports: 
       - 3000:3000 
     # env_file: 

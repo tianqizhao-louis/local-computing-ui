@@ -8,7 +8,7 @@ function App() {
   const [breeders, setBreeders] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/v1/breeders/")
+    fetch("http://localhost:8002/api/v1/breeders/")
       .then((response) => response.json())
       .then((data) => setBreeders(data));
   }, []);

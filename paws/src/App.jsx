@@ -8,9 +8,17 @@ function App() {
   const [breeders, setBreeders] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/v1/breeders/")
-      .then((response) => response.json())
-      .then((data) => setBreeders(data));
+    const running_env = import.meta.env.MODE;
+
+    if (running_env === "development") {
+      fetch("http://localhost:8080/api/v1/breeders/")
+        .then((response) => response.json())
+        .then((data) => setBreeders(data));
+    } else if (running_env === "production") {
+      fetch("http://34.72.253.184:8080/api/v1/breeders/")
+        .then((response) => response.json())
+        .then((data) => setBreeders(data));
+    }
   }, []);
 
   return (
@@ -43,10 +51,12 @@ function App() {
 function Breeders({ breeders }) {
   return (
     <div>
-      <h1>Breeders</h1>
+      <h1>hi</h1>
       <ul>
         {breeders.map((breeder) => (
-          <li key={breeder.id}>{breeder.id}: {breeder.name}</li>
+          <li key={breeder.id}>
+            {breeder.id}: {breeder.name}
+          </li>
         ))}
       </ul>
     </div>

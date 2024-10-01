@@ -1,17 +1,19 @@
-# docker-compose.yaml 
- 
-services: 
-  react-app: 
+# docker-compose.yaml
+
+services:
+  react-app:
     container_name: react-app
-    restart: unless-stopped 
-    build: 
-      context: . 
+    restart: unless-stopped
+    build:
+      context: .
       dockerfile: dev.Dockerfile
-    volumes: 
-      - ./paws:/app 
-      - /app/.next 
-      - /app/node_modules 
-    ports: 
-      - 3000:3000 
-    # env_file: 
+    volumes:
+      - ./paws:/app
+      - /app/.next
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    # environment:
+    #   - VITE_NODE_ENV=development
+    # env_file:
     #   - ./.env

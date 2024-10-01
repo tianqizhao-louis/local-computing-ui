@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "gcp-deploy": "gsutil -m cp -r dist/* gs://local-computing-ui"
   },
   "dependencies": {
     "react": "^18.3.1",

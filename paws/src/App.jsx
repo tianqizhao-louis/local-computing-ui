@@ -22,7 +22,10 @@ function App() {
         }
         return response.json();
       })
-      .then((data) => setState(data))
+      .then((data) => {
+        console.log(`${serviceName} data:`, data); // Log the fetched data
+        setState(data.data); // Access the data inside the "data" key
+      })
       .catch((error) => {
         console.error(`${serviceName} error:`, error);
       });
@@ -49,12 +52,17 @@ function App() {
   const handleFilter = () => {
     let filtered = breeders;
 
+    // Check if breeders is an array before applying filters
+    if (!Array.isArray(filtered)) {
+      filtered = [];
+    }
+
     if (city !== "Any City") {
-      filtered = filtered.filter((breeder) => breeder.city === city);
+      filtered = filtered.filter((breeder) => breeder.breeder_city === city);
     }
 
     if (country !== "Any Country") {
-      filtered = filtered.filter((breeder) => breeder.country === country);
+      filtered = filtered.filter((breeder) => breeder.breeder_country === country);
     }
 
     setFilteredBreeders(filtered);
@@ -66,9 +74,8 @@ function App() {
       if (criteria === "name") {
         return a.name.localeCompare(b.name);
       } else if (criteria === "price") {
-        return a.price - b.price;
+        return a.price_level.localeCompare(b.price_level);
       }
-      // Add other sorting criteria if needed
       return 0;
     });
 
@@ -142,8 +149,8 @@ function BreederList({ breeders }) {
           {breeders.map((breeder) => (
             <li key={breeder.id}>
               <h3>{breeder.name}</h3>
-              <p>{breeder.city}, {breeder.country}</p>
-              <p>Price: {breeder.price}</p>
+              <p>{breeder.breeder_city}, {breeder.breeder_country}</p>
+              <p>Price Level: {breeder.price_level}</p>
             </li>
           ))}
         </ul>

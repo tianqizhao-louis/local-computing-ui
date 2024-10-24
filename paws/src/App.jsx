@@ -6,6 +6,8 @@ function App() {
   const [filteredBreeders, setFilteredBreeders] = useState([]);
   const [city, setCity] = useState("Any City");
   const [country, setCountry] = useState("Any Country");
+  const [cities, setCities] = useState([]);
+  const [countries, setCountries] = useState([]);
 
   // Generalized function to fetch data
   const fetchData = (url, setState, serviceName) => {
@@ -43,8 +45,13 @@ function App() {
     }
   }, []);
 
-  // Update filtered breeders whenever the breeder data changes or when filters are applied
   useEffect(() => {
+    // Extract unique cities and countries from breeders data
+    const uniqueCities = Array.from(new Set(breeders.map(breeder => breeder.breeder_city)));
+    const uniqueCountries = Array.from(new Set(breeders.map(breeder => breeder.breeder_country)));
+
+    setCities(uniqueCities);
+    setCountries(uniqueCountries);
     setFilteredBreeders(breeders);
   }, [breeders]);
 
@@ -110,14 +117,16 @@ function App() {
           <div className="filter-controls">
             <select value={city} onChange={(e) => setCity(e.target.value)}>
               <option value="Any City">Any City</option>
-              <option value="New York">New York</option>
-              <option value="Los Angeles">Los Angeles</option>
+              {cities.map((city, index) => (
+                <option key={index} value={city}>{city}</option>
+              ))}
             </select>
 
             <select value={country} onChange={(e) => setCountry(e.target.value)}>
               <option value="Any Country">Any Country</option>
-              <option value="USA">USA</option>
-              <option value="Canada">Canada</option>
+              {countries.map((country, index) => (
+                <option key={index} value={country}>{country}</option>
+              ))}
             </select>
 
             <button className="submit-btn" onClick={handleFilter}>Submit</button>

@@ -1,136 +1,209 @@
-/* Overall page styling */
-body, html {
+/* General Layout */
+body {
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
-  height: 100%;
+  background-color: #f4f4f9;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Ensure vertical layout */
+  min-height: 100vh; /* Make sure the body takes up full screen height */
 }
 
-/* Container to take full width and height */
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+  flex: 1; /* Allow the container to take up remaining space */
+  max-width: 100%;
   padding: 20px;
 }
 
-/* Header styles */
-header {
-  width: 100%;
-  background-color: #F1C40F; /* light yellow header */
-  padding: 20px 0;
-  text-align: center;
+@media (min-width: 768px) {
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 }
 
+/* Header */
 .header-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
+  background-color: #4CAF50;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  z-index: 100; /* Ensure header stays on top */
+  position: relative;
 }
 
 .header-title h1 {
   margin: 0;
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 2.5em;
 }
 
-.header-title nav a {
-  margin-left: 20px;
-  color: black;
+nav {
+  margin-top: 10px;
+}
+
+nav a {
+  margin: 0 10px;
+  color: white;
   text-decoration: none;
-  font-size: 1.1rem;
   font-weight: bold;
 }
 
-.header-title nav a:hover {
-  text-decoration: underline;
-}
-
-/* Main section */
+/* Main Section */
 main {
-  width: 100%;
-  max-width: 1200px;
-  margin: 20px auto;
-  text-align: center;
+  flex: 1; /* Allow main content to take up the available space */
+  margin-top: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1; /* Keep content above background */
 }
 
-main h2 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
+h2, h3 {
+  color: #333;
 }
 
-main p {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
+p {
+  font-size: 1.2em;
+  color: #555;
 }
 
-/* Filter section */
+/* Filter and Sort Section */
 .filter-section {
   margin-bottom: 20px;
-  text-align: center;
 }
 
 .filter-controls, .sort-controls {
   display: flex;
-  justify-content: center;
   gap: 10px;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  justify-content: center;
 }
 
 select, button {
   padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  font-size: 1em;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button.submit-btn {
+  background-color: #4CAF50;
+  color: white;
   cursor: pointer;
 }
 
-.submit-btn {
-  background-color: #F1C40F;
+button.submit-btn:hover {
+  background-color: #45a049;
+}
+
+button.reset-btn {
+  background-color: #f44336;
   color: white;
-  font-weight: bold;
-  border: none;
+  cursor: pointer;
 }
 
-.reset-btn {
-  background-color: #E74C3C;
-  color: white;
-  font-weight: bold;
-  border: none;
+button.reset-btn:hover {
+  background-color: #e53935;
 }
 
-button:hover {
-  opacity: 0.8;
-}
-
-/* Breeder list */
+/* Breeder List */
 .breeder-list ul {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
 .breeder-list li {
-  border: 1px solid #eee;
-  padding: 10px;
+  background-color: #fafafa;
+  padding: 15px;
   margin: 10px 0;
   border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  flex: 1 1 calc(33.333% - 20px);
+  box-sizing: border-box;
 }
 
-/* Footer styling */
+@media (max-width: 768px) {
+  .breeder-list li {
+    flex: 1 1 calc(50% - 20px);
+  }
+}
+
+@media (max-width: 576px) {
+  .breeder-list li {
+    flex: 1 1 100%;
+  }
+}
+
+.breeder-list li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.breeder-list li h3 {
+  margin: 0;
+  color: #333;
+  cursor: pointer;
+}
+
+.breeder-list li p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.breeder-list li h3:hover {
+  color: #4CAF50;
+  text-decoration: underline;
+}
+
+/* Breeder Details */
+.breeder-details {
+  text-align: center;
+}
+
+.breeder-details h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.breeder-details p {
+  font-size: 1.2em;
+  color: #555;
+  margin: 5px 0;
+}
+
+.breeder-details button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px;
+  font-size: 1em;
+}
+
+.breeder-details button:hover {
+  background-color: #45a049;
+}
+
+/* Footer */
 footer {
-  margin-top: auto;
-  background-color: #f9f9f9;
-  width: 100%;
   text-align: center;
   padding: 20px;
-  font-size: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  position: relative;
+  z-index: 100; /* Ensure footer stays on top */
 }
 
 footer p {

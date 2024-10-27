@@ -42,7 +42,7 @@ function App() {
     if (running_env === "development") {
       fetchData("http://localhost:8084/api/v1/composites", setBreeders, "Composites");
     } else if (running_env === "production") {
-      fetchData("http://localhost:8084/api/v1/composites", setBreeders, "Composites");
+      fetchData("http://35.193.234.242:8084/api/v1/composites", setBreeders, "Composites");
     }
   }, []);
 

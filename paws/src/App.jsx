@@ -38,12 +38,13 @@ function App() {
 
   useEffect(() => {
     const running_env = import.meta.env.MODE;
+    fetchData("http://35.193.234.242:8084/api/v1/composites", setBreeders, "Composites");
 
-    if (running_env === "development") {
-      fetchData("http://localhost:8084/api/v1/composites", setBreeders, "Composites");
-    } else if (running_env === "production") {
-      fetchData("http://35.193.234.242:8084/api/v1/composites", setBreeders, "Composites");
-    }
+    // if (running_env === "development") {
+    //   fetchData("http://localhost:8084/api/v1/composites", setBreeders, "Composites");
+    // } else if (running_env === "production") {
+    //   fetchData("http://35.193.234.242:8084/api/v1/composites", setBreeders, "Composites");
+    // }
   }, []);
 
   useEffect(() => {

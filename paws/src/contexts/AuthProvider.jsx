@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useGoogleLogin, googleLogout } from "@react-oauth/google";
+import { redirect } from "react-router-dom";
 
 // Create context
 const AuthContext = createContext(null);
@@ -56,6 +57,7 @@ export const AuthProvider = ({ children }) => {
     setProfile(null);
     localStorage.removeItem("user");
     localStorage.removeItem("profile");
+    redirect("/login");
   };
 
   // Create value object

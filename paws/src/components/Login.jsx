@@ -5,7 +5,7 @@ export default function Login() {
 
   return (
     <div>
-      <h2>React Google Login</h2>
+      <h2>Google Login</h2>
       <br />
       <br />
       {profile ? (
@@ -16,10 +16,12 @@ export default function Login() {
           <p>Email Address: {profile.email}</p>
           <br />
           <br />
-          <button onClick={logOut}>Log out</button>
+          <button onClick={logOut} className="button is-danger">Log out</button>
         </div>
       ) : (
-        <button onClick={login}>Sign in with Google 🚀</button>
+        <button onClick={login} className="button is-info">
+          Sign in with Google 🚀
+        </button>
       )}
     </div>
   );

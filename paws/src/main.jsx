@@ -6,10 +6,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import Root, {
-  loader as rootLoader,
-  action as rootAction,
-} from "./routes/root";
+import Root from "./routes/root";
 import ErrorPage from "./error-page";
 // import Contact, {
 //   loader as contactLoader,
@@ -19,21 +16,17 @@ import ErrorPage from "./error-page";
 // import { action as destroyAction } from "./routes/destroy";
 import Index from "./routes/index";
 import Login from "./components/Login";
-import { SecurePage } from "./components/secure/SecurePage";
+// import { SecurePage } from "./components/secure/SecurePage";
 import { SecureRoute } from "./components/secure/SecureRoute";
+import { UserProfile } from "./components/secure/Profile";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "./contexts/AuthProvider";
 import "./index.css";
+import "bulma/css/bulma.css";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route
-      path="/"
-      element={<Root />}
-      loader={rootLoader}
-      action={rootAction}
-      errorElement={<ErrorPage />}
-    >
+    <Route path="/" element={<Root />} errorElement={<ErrorPage />}>
       <Route errorElement={<ErrorPage />}>
         <Route index element={<Index />} />
         {/* <Route
@@ -52,13 +45,21 @@ const router = createBrowserRouter(
 
         <Route path="login" element={<Login />} />
         <Route
+          path="profile"
+          element={
+            <SecureRoute>
+              <UserProfile />
+            </SecureRoute>
+          }
+        />
+        {/* <Route
           path="/secure"
           element={
             <SecureRoute>
               <SecurePage />
             </SecureRoute>
           }
-        />
+        /> */}
         <Route path="auth/callback" element={<Login />} />
       </Route>
     </Route>

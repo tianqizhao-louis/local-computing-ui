@@ -21,7 +21,9 @@ function App() {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`${serviceName} fetch failed: ${response.statusText}`);
+          throw new Error(
+            `${serviceName} fetch failed: ${response.statusText}`
+          );
         }
         return response.json();
       })
@@ -38,7 +40,11 @@ function App() {
 
   useEffect(() => {
     const running_env = import.meta.env.MODE;
-    fetchData("http://34.29.2.129:8004/api/v1/composites", setBreeders, "Composites");
+    fetchData(
+      "http://34.29.2.129:8004/api/v1/composites",
+      setBreeders,
+      "Composites"
+    );
 
     // if (running_env === "development") {
     //   fetchData("http://localhost:8084/api/v1/composites", setBreeders, "Composites");
@@ -63,7 +69,9 @@ function App() {
     }
 
     if (country !== "Any Country") {
-      filtered = filtered.filter((breeder) => breeder.breeder_country === country);
+      filtered = filtered.filter(
+        (breeder) => breeder.breeder_country === country
+      );
     }
 
     setFilteredBreeders(filtered);
@@ -90,11 +98,11 @@ function App() {
 
   const showDetails = (breeder) => {
     setSelectedBreeder(breeder); // Store the selected breeder
-    setCurrentPage("details");   // Navigate to the detail page
+    setCurrentPage("details"); // Navigate to the detail page
   };
 
   const goBackToHome = () => {
-    setCurrentPage("home");      // Navigate back to the home page
+    setCurrentPage("home"); // Navigate back to the home page
   };
 
   return (
@@ -116,20 +124,27 @@ function App() {
               <div className="filter-controls">
                 <select value={city} onChange={(e) => setCity(e.target.value)}>
                   <option value="Any City">Any City</option>
-                  {[...new Set(breeders.map((b) => b.breeder_city))].map((city, idx) => (
-                    <option key={idx} value={city}>
-                      {city}
-                    </option>
-                  ))}
+                  {[...new Set(breeders.map((b) => b.breeder_city))].map(
+                    (city, idx) => (
+                      <option key={idx} value={city}>
+                        {city}
+                      </option>
+                    )
+                  )}
                 </select>
 
-                <select value={country} onChange={(e) => setCountry(e.target.value)}>
+                <select
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                >
                   <option value="Any Country">Any Country</option>
-                  {[...new Set(breeders.map((b) => b.breeder_country))].map((country, idx) => (
-                    <option key={idx} value={country}>
-                      {country}
-                    </option>
-                  ))}
+                  {[...new Set(breeders.map((b) => b.breeder_country))].map(
+                    (country, idx) => (
+                      <option key={idx} value={country}>
+                        {country}
+                      </option>
+                    )
+                  )}
                 </select>
 
                 <button className="submit-btn" onClick={handleFilter}>
@@ -142,14 +157,23 @@ function App() {
 
               <div className="sort-controls">
                 <button onClick={() => handleSort("name")}>Sort by Name</button>
-                <button onClick={() => handleSort("price")}>Sort by Price</button>
+                <button onClick={() => handleSort("price")}>
+                  Sort by Price
+                </button>
               </div>
             </div>
 
-            <BreederList breeders={filteredBreeders} showDetails={showDetails} />
+            <BreederList
+              breeders={filteredBreeders}
+              showDetails={showDetails}
+            />
           </>
         ) : (
-          <BreederDetails breeder={selectedBreeder} pets={pets} goBack={goBackToHome} />
+          <BreederDetails
+            breeder={selectedBreeder}
+            pets={pets}
+            goBack={goBackToHome}
+          />
         )}
       </main>
 
@@ -168,7 +192,10 @@ function BreederList({ breeders, showDetails }) {
         <ul>
           {breeders.map((breeder) => (
             <li key={breeder.id}>
-              <h3 onClick={() => showDetails(breeder)} style={{ cursor: "pointer" }}>
+              <h3
+                onClick={() => showDetails(breeder)}
+                style={{ cursor: "pointer" }}
+              >
                 {breeder.name}
               </h3>
               <p>

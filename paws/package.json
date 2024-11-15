@@ -11,8 +11,16 @@
     "gcp-deploy": "gsutil -m cp -r dist/* gs://local-computing-ui"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.1",
+    "axios": "^1.7.7",
+    "bulma": "^1.0.2",
+    "js-cookie": "^3.0.5",
+    "localforage": "^1.10.0",
+    "match-sorter": "^8.0.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "sort-by": "^1.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

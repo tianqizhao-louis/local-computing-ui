@@ -1,7 +1,12 @@
 import { useAuth } from "../contexts/AuthProvider";
+import { Navigate } from "react-router-dom";
 
 export default function Login() {
   const { profile, login, logOut } = useAuth();
+
+  if (profile) {
+    return <Navigate to="/callback" replace />;
+  }
 
   return (
     <div>
@@ -16,7 +21,9 @@ export default function Login() {
           <p>Email Address: {profile.email}</p>
           <br />
           <br />
-          <button onClick={logOut} className="button is-danger">Log out</button>
+          <button onClick={logOut} className="button is-danger">
+            Log out
+          </button>
         </div>
       ) : (
         <button onClick={login} className="button is-info">

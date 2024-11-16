@@ -5,21 +5,21 @@ export default function Index() {
   const [status, setStatus] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${config.breederUrl}/`); // Replace with your URL
-        if (response.status === 200) {
+    const fetchBreeder = fetch(`${config.breederUrl}/`);
+    const fetchCustomer = fetch(`${config.customerUrl}/`);
+
+    Promise.all([fetchBreeder, fetchCustomer])
+      .then((responses) => {
+        if (responses[0].status === 200 && responses[1].status === 200) {
           setStatus("ok");
         } else {
           setStatus("wrong");
         }
-      } catch (error) {
+      })
+      .catch((error) => {
         setStatus("wrong");
         console.log(error);
-      }
-    };
-
-    fetchData();
+      });
   }, []);
 
   return (

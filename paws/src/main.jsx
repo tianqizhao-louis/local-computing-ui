@@ -23,6 +23,8 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "./contexts/AuthProvider";
 import "./index.css";
 import "bulma/css/bulma.css";
+import Callback from "./components/Callback";
+import { SecureUserType } from "./components/secure/SecureUserType";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -48,7 +50,9 @@ const router = createBrowserRouter(
           path="profile"
           element={
             <SecureRoute>
-              <UserProfile />
+              <SecureUserType>
+                <UserProfile />
+              </SecureUserType>
             </SecureRoute>
           }
         />
@@ -60,7 +64,7 @@ const router = createBrowserRouter(
             </SecureRoute>
           }
         /> */}
-        <Route path="auth/callback" element={<Login />} />
+        <Route path="callback" element={<Callback />} />
       </Route>
     </Route>
   )

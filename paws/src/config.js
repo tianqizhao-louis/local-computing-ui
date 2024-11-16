@@ -4,8 +4,8 @@ const devConfig = {
 };
 
 const prodConfig = {
-  breederUrl: "https://api.yourdomain.com",
-  customerUrl: "http://localhost:8001/api/v1/customers",
+  breederUrl: "https://breeder-661348528801.us-central1.run.app/api/v1/breeders",
+  customerUrl: "https://customer-661348528801.us-central1.run.app/api/v1/customers",
 };
 
 const config = process.env.NODE_ENV === "development" ? devConfig : prodConfig;

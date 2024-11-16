@@ -28,14 +28,16 @@ ENV NODE_ENV=production
 # Set the working directory
 WORKDIR /app
 
+# Install serve globally
+RUN npm install -g serve
+
 # Copy the build output and necessary files from the builder stage
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
+COPY --from=builder /app/dist ./dist
 
-# Expose the port Next.js will run on
-EXPOSE 3000
+# Expose the port
+EXPOSE 8080
 
-# Run the Next.js application
-CMD ["npm", "run", "start"]
+# Run the application using serve
+CMD ["serve", "-s", "dist", "-l", "8080"]

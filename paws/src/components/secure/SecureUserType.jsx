@@ -12,7 +12,7 @@ export const SecureUserType = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (!userType) {
+  if (!userType || userType === "unknown") {
     return <Navigate to="/callback" replace />;
   }
 

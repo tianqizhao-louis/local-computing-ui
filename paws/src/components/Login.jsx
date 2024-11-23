@@ -5,7 +5,7 @@ export default function Login() {
   const { profile, login, logOut } = useAuth();
 
   if (profile) {
-    return <Navigate to="/callback" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return (

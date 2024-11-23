@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import config from "../../config";
 
 export default function ProfileUserType({ userType, profile }) {
-  //   const fetchBreeder = fetch(`${config.breederUrl}/email/${profile.email}/`);
-  //   const fetchCustomer = fetch(`${config.customerUrl}/email/${profile.email}/`);
-  //   const data = {};
-
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -45,6 +42,12 @@ export default function ProfileUserType({ userType, profile }) {
           <p>Country: {data.breeder_country}</p>
           <p>Price Level: {data.price_level}</p>
           <p>Address: {data.breeder_address}</p>
+          <Link 
+            to="/breeder" 
+            className="button is-primary is-outlined mt-4"
+          >
+            Go to Breeder Dashboard
+          </Link>
         </div>
       ) : userType === "customer" ? (
         <div>

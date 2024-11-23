@@ -1,52 +1,47 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import config from "../config";
 import { useAuth } from "../contexts/AuthProvider";
 import DeclareType from "./DeclareType";
-import { Navigate } from "react-router-dom";
 
 export default function Callback() {
   const { profile, userType, setUserType } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchBreeder = fetch(`${config.breederUrl}/email/${profile.email}/`);
-    const fetchCustomer = fetch(
-      `${config.customerUrl}/email/${profile.email}/`
-    );
+    const fetchUserType = async () => {
+      try {
+        const fetchBreeder = fetch(`${config.breederUrl}/email/${profile.email}/`);
+        const fetchCustomer = fetch(`${config.customerUrl}/email/${profile.email}/`);
 
-    Promise.all([fetchBreeder, fetchCustomer])
-      .then((responses) => {
-        if (responses[0].status === 200) {
-          // User is Breeder
+        const [breederRes, customerRes] = await Promise.all([
+          fetchBreeder,
+          fetchCustomer,
+        ]);
+
+        if (breederRes.status === 200) {
           setUserType("breeder");
-        } else if (responses[1].status === 200) {
-          // User is Customer
+          navigate("/breeder");
+        } else if (customerRes.status === 200) {
           setUserType("customer");
+          navigate("/");
         } else {
-          // User hasn't declared
           setUserType("unknown");
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         setUserType("unknown");
         console.log(error);
-      });
-  }, [setUserType, profile.email]);
+      }
+    };
 
-  if (userType && userType !== "unknown") {
-    return <Navigate to="/" replace />;
+    if (profile?.email) {
+      fetchUserType();
+    }
+  }, [profile?.email, setUserType, navigate]);
+
+  if (!userType || userType === "unknown") {
+    return <DeclareType />;
   }
 
-  return (
-    <div>
-      {userType === "breeder" ? (
-        <div>Welcome Breeder</div>
-      ) : userType === "customer" ? (
-        <div>Welcome Customer</div>
-      ) : userType === "unknown" ? (
-        <DeclareType />
-      ) : (
-        <div>Loading...</div>
-      )}
-    </div>
-  );
+  return <div>Redirecting...</div>;
 }

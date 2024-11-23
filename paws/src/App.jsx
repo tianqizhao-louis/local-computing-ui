@@ -41,7 +41,7 @@ function App() {
   useEffect(() => {
     const running_env = import.meta.env.MODE;
     fetchData(
-      "http://34.29.2.129:8004/api/v1/composites",
+      "http://localhost:8004/api/v1/composites",
       setBreeders,
       "Composites"
     );

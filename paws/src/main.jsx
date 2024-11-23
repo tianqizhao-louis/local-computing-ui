@@ -18,6 +18,7 @@ import "./index.css";
 import "bulma/css/bulma.css";
 import Callback from "./components/Callback";
 import { SecureUserType } from "./components/secure/SecureUserType";
+import { BreederPage } from "./components/secure/BreederPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,12 +26,18 @@ const router = createBrowserRouter(
       <Route index element={<App />} /> {/* Set App as the default component */}
       <Route path="login" element={<Login />} />
       <Route
+        path="breeder"
+        element={
+          <SecureRoute>
+            <BreederPage />
+          </SecureRoute>
+        }
+      />
+      <Route
         path="profile"
         element={
           <SecureRoute>
-            <SecureUserType>
-              <UserProfile />
-            </SecureUserType>
+            <UserProfile />
           </SecureRoute>
         }
       />

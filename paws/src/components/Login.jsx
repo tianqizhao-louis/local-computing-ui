@@ -2,9 +2,26 @@ import { useAuth } from "../contexts/AuthProvider";
 import { Navigate } from "react-router-dom";
 
 export default function Login() {
-  const { profile, login, logOut } = useAuth();
+  const { profile, login, logOut, setCustomerId } = useAuth(); // Add setCustomerId from AuthProvider
 
+  const fetchCustomerId = async (email) => {
+    try {
+      const response = await fetch(`http://localhost:8001/api/v1/customers/email/${email}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch customer ID: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      setCustomerId(data.id); // Store customer_id in context
+      console.log("Customer ID set:", data.id);
+    } catch (error) {
+      console.error("Error fetching customer ID:", error);
+    }
+  };
+
+  // Trigger fetchCustomerId when profile is loaded
   if (profile) {
+    fetchCustomerId(profile.email); // Fetch customer_id using the user's email
     return <Navigate to="/" replace />;
   }
 
@@ -33,3 +50,4 @@ export default function Login() {
     </div>
   );
 }
+

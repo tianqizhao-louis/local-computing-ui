@@ -10,12 +10,16 @@ export const UserProfile = () => {
 
   useEffect(() => {
     const verifyUserType = async () => {
-      if (!profile?.email) return;
-      
+      if (!profile?.email || userType) {
+        // Ensure loading is set to false even if the guard skips
+        setLoading(false);
+        return;
+      }
+
       try {
         const [breederRes, customerRes] = await Promise.all([
           fetch(`${config.breederUrl}/email/${profile.email}/`),
-          fetch(`${config.customerUrl}/email/${profile.email}/`)
+          fetch(`${config.customerUrl}/email/${profile.email}/`),
         ]);
 
         if (breederRes.status === 200) {
@@ -29,12 +33,12 @@ export const UserProfile = () => {
         console.error("Error verifying user type:", error);
         setUserType("unknown");
       } finally {
-        setLoading(false);
+        setLoading(false); // Ensure loading ends
       }
     };
 
     verifyUserType();
-  }, [profile?.email, setUserType]);
+  }, [profile?.email, userType, setUserType]);
 
   if (loading) {
     return (
@@ -55,7 +59,7 @@ export const UserProfile = () => {
         <img src={profile.picture} alt="user image" className="profile-image" />
         <div className="profile-details">
           <h3>User Information</h3>
-          <p>Name: {profile.name}</p>
+          <p>GoogleName: {profile.name}</p>
           <p>Email Address: {profile.email}</p>
           <ProfileUserType userType={userType} profile={profile} />
         </div>
@@ -63,3 +67,4 @@ export const UserProfile = () => {
     </div>
   );
 };
+

@@ -1,6 +1,9 @@
 const devConfig = {
   breederUrl: "http://localhost:8080/api/v1/breeders",
   customerUrl: "http://localhost:8081/api/v1/customers",
+  waitlistUrl: "http://localhost:8001/api/v1/customers",
+  compositeUrl: "http://localhost:8004/api/v1/composites",
+  petUrl: "http://localhost:8082/api/v1/pets",
 };
 
 const prodConfig = {

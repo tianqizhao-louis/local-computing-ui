@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [userType, setUserType] = useState(null);
+  const [customerId, setCustomerId] = useState(null); // Added customerId state
   const [loading, setLoading] = useState(true);
 
   const login = useGoogleLogin({
@@ -19,10 +20,11 @@ export const AuthProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    // Check if there's a user token, profile, and userType in localStorage on mount
+    // Check if there's a user token, profile, userType, and customerId in localStorage on mount
     const savedUser = localStorage.getItem("user");
     const savedProfile = localStorage.getItem("profile");
     const savedUserType = localStorage.getItem("userType");
+    const savedCustomerId = localStorage.getItem("customerId"); // Check for customerId
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
@@ -31,6 +33,9 @@ export const AuthProvider = ({ children }) => {
     }
     if (savedUserType) {
       setUserType(savedUserType);
+    }
+    if (savedCustomerId) {
+      setCustomerId(savedCustomerId); // Restore customerId from localStorage
     }
     setLoading(false);
   }, []);
@@ -64,9 +69,11 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setProfile(null);
     setUserType(null);
+    setCustomerId(null); // Clear customerId on logout
     localStorage.removeItem("user");
     localStorage.removeItem("profile");
     localStorage.removeItem("userType");
+    localStorage.removeItem("customerId"); // Remove customerId from localStorage
   };
 
   // Create value object
@@ -82,6 +89,8 @@ export const AuthProvider = ({ children }) => {
       setUserType(type);
       localStorage.setItem("userType", type);
     },
+    customerId, // Add customerId to the context value
+    setCustomerId, // Add setCustomerId to allow updates
   };
 
   return (
@@ -103,3 +112,4 @@ export const useAuth = () => {
   }
   return context;
 };
+

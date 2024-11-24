@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "./contexts/AuthProvider";
 import "./App.css";
 
 function App() {
@@ -213,13 +214,49 @@ function BreederList({ breeders, showDetails }) {
 }
 
 // Component to display breeder details with associated pets
-function BreederDetails({ breeder, pets, goBack }) {
+const BreederDetails = ({ breeder, pets, goBack }) => {
+  const { customerId } = useAuth(); // Access customerId from the AuthProvider
+
   if (!breeder) {
     return <p>No breeder selected.</p>;
   }
 
   // Filter pets by breeder_id
   const breederPets = pets.filter((pet) => pet.breeder_id === breeder.id);
+
+  // Function to join the waitlist
+  const joinWaitlist = async (petId, breederId) => {
+    if (!customerId) {
+      alert("Please log in first to join the waitlist.");
+      return;
+    }
+
+    try {
+      console.log("Joining waitlist with:", { customerId, petId, breederId });
+      const response = await fetch(`http://localhost:8001/api/v1/customers/${customerId}/waitlist`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          pet_id: petId,
+          breeder_id: breederId,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorDetails = await response.text();
+        throw new Error(`Error: ${response.statusText}. Details: ${errorDetails}`);
+      }
+
+      const data = await response.json();
+      console.log("Waitlist entry created:", data);
+      alert("Successfully joined the waitlist!");
+    } catch (error) {
+      console.error("Failed to join the waitlist:", error);
+      alert(`Failed to join the waitlist. Details: ${error.message}`);
+    }
+  };
 
   return (
     <div>
@@ -234,10 +271,34 @@ function BreederDetails({ breeder, pets, goBack }) {
       {breederPets.length > 0 ? (
         <ul>
           {breederPets.map((pet) => (
-            <li key={pet.id}>
-              <p>
-                {pet.name} - {pet.type} - ${pet.price}
-              </p>
+            <li key={pet.id} style={{ marginBottom: "20px", display: "flex", alignItems: "center" }}>
+              <div>
+                <p>
+                  <strong>{pet.name}</strong> - {pet.type} - ${pet.price}
+                </p>
+                {pet.image_url && (
+                  <img
+                    src={pet.image_url}
+                    alt={pet.name}
+                    style={{ width: "150px", height: "150px", objectFit: "cover" }}
+                  />
+                )}
+              </div>
+              <div style={{ marginLeft: "20px" }}>
+                <button
+                  onClick={() => joinWaitlist(pet.id, breeder.id)}
+                  style={{
+                    padding: "10px 20px",
+                    backgroundColor: "#4CAF50",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Join Waitlist
+                </button>
+              </div>
             </li>
           ))}
         </ul>
@@ -246,6 +307,7 @@ function BreederDetails({ breeder, pets, goBack }) {
       )}
     </div>
   );
-}
+};
+
 
 export default App;

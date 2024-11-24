@@ -24,7 +24,7 @@ body {
 
 /* Header */
 .header-title {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   padding: 20px;
   text-align: center;
   color: white;
@@ -62,7 +62,8 @@ main {
   z-index: 1; /* Keep content above background */
 }
 
-h2, h3 {
+h2,
+h3 {
   color: #333;
 }
 
@@ -76,7 +77,8 @@ p {
   margin-bottom: 20px;
 }
 
-.filter-controls, .sort-controls {
+.filter-controls,
+.sort-controls {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
@@ -84,7 +86,8 @@ p {
   justify-content: center;
 }
 
-select, button {
+select,
+button {
   padding: 10px;
   font-size: 1em;
   border: 1px solid #ddd;
@@ -92,7 +95,7 @@ select, button {
 }
 
 button.submit-btn {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   cursor: pointer;
 }
@@ -161,7 +164,7 @@ button.reset-btn:hover {
 }
 
 .breeder-list li h3:hover {
-  color: #4CAF50;
+  color: #4caf50;
   text-decoration: underline;
 }
 
@@ -182,7 +185,7 @@ button.reset-btn:hover {
 }
 
 .breeder-details button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -200,7 +203,7 @@ button.reset-btn:hover {
 footer {
   text-align: center;
   padding: 20px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   position: relative;
   z-index: 100; /* Ensure footer stays on top */
@@ -225,6 +228,7 @@ footer p {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
 }
 
 .pets-list ul {
@@ -244,7 +248,7 @@ footer p {
 
 .pets-list h3 {
   margin: 0 0 10px 0;
-  color: #4CAF50;
+  color: #4caf50;
 }
 
 .pets-list p {
@@ -276,7 +280,7 @@ footer p {
 
 .profile-details h3 {
   margin-top: 0;
-  color: #4CAF50;
+  color: #4caf50;
 }
 
 @media (max-width: 576px) {

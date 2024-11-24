@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import config from "../../config";
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import config from '../../config';
 
 export default function ProfileUserType({ userType, profile }) {
   const [data, setData] = useState({});
@@ -13,46 +13,83 @@ export default function ProfileUserType({ userType, profile }) {
     const fetchData = async () => {
       try {
         setLoading(true);
-  
-        if (userType === "customer") {
-          const response = await fetch(`${config.customerUrl}/email/${profile.email}/`);
-          if (!response.ok) throw new Error(`Error fetching customer data: ${response.statusText}`);
+
+        if (userType === 'breeder') {
+          const response = await fetch(
+            `${config.breederUrl}/email/${profile.email}/`,
+          );
+          if (!response.ok)
+            throw new Error(
+              `Error fetching customer data: ${response.statusText}`,
+            );
+          const breederData = await response.json();
+          setData(breederData);
+        }
+
+        if (userType === 'customer') {
+          const response = await fetch(
+            `${config.customerUrl}/email/${profile.email}/`,
+          );
+          if (!response.ok)
+            throw new Error(
+              `Error fetching customer data: ${response.statusText}`,
+            );
           const customerData = await response.json();
           setData(customerData);
-  
+
           // Fetch waitlist entries for the customer
           if (customerData.id) {
-            const waitlistResponse = await fetch(`${config.customerUrl}/${customerData.id}/waitlist`);
-            if (!waitlistResponse.ok) throw new Error(`Error fetching waitlist: ${waitlistResponse.statusText}`);
+            const waitlistResponse = await fetch(
+              `${config.customerUrl}/${customerData.id}/waitlist`,
+            );
+            if (!waitlistResponse.ok)
+              throw new Error(
+                `Error fetching waitlist: ${waitlistResponse.statusText}`,
+              );
             const waitlistData = await waitlistResponse.json();
-  
+
             // Enrich waitlist with pet and breeder details
             const enrichedWaitlist = await Promise.all(
               waitlistData.map(async (entry) => {
                 try {
                   // Fetch pet details
-                  const petResponse = await fetch(`${config.petUrl}/${entry.pet_id}/`);
-                  if (!petResponse.ok) throw new Error(`Error fetching pet data: ${petResponse.statusText}`);
+                  const petResponse = await fetch(
+                    `${config.petUrl}/${entry.pet_id}/`,
+                  );
+                  if (!petResponse.ok)
+                    throw new Error(
+                      `Error fetching pet data: ${petResponse.statusText}`,
+                    );
                   const petData = await petResponse.json();
-  
+
                   // Fetch breeder details using breeder_id
-                  const breederResponse = await fetch(`${config.breederUrl}/${entry.breeder_id}/`);
-                  if (!breederResponse.ok) throw new Error(`Error fetching breeder data: ${breederResponse.statusText}`);
+                  const breederResponse = await fetch(
+                    `${config.breederUrl}/${entry.breeder_id}/`,
+                  );
+                  if (!breederResponse.ok)
+                    throw new Error(
+                      `Error fetching breeder data: ${breederResponse.statusText}`,
+                    );
                   const breederData = await breederResponse.json();
-  
+
                   return {
                     ...entry,
-                    pet_name: petData.name || "Unknown Pet",
-                    pet_image: petData.image_url || "",
-                    breeder_name: breederData.name || "Unknown Breeder",
+                    pet_name: petData.name || 'Unknown Pet',
+                    pet_image: petData.image_url || '',
+                    breeder_name: breederData.name || 'Unknown Breeder',
                   };
                 } catch (err) {
                   console.error(err);
-                  return { ...entry, pet_name: "Error", pet_image: "", breeder_name: "Error" };
+                  return {
+                    ...entry,
+                    pet_name: 'Error',
+                    pet_image: '',
+                    breeder_name: 'Error',
+                  };
                 }
-              })
+              }),
             );
-  
+
             setWaitlist(enrichedWaitlist);
           }
         }
@@ -63,7 +100,7 @@ export default function ProfileUserType({ userType, profile }) {
         setLoading(false);
       }
     };
-  
+
     fetchData();
   }, [userType, profile.email]);
 
@@ -80,7 +117,7 @@ export default function ProfileUserType({ userType, profile }) {
   // Render content based on userType
   return (
     <div>
-      {userType === "breeder" ? (
+      {userType === 'breeder' ? (
         <div>
           <p>You are a breeder.</p>
           <h3>Breeder Information</h3>
@@ -93,7 +130,7 @@ export default function ProfileUserType({ userType, profile }) {
             Go to Breeder Dashboard
           </Link>
         </div>
-      ) : userType === "customer" ? (
+      ) : userType === 'customer' ? (
         <div>
           <p>You are a customer.</p>
           <h3>Customer Information</h3>
@@ -105,11 +142,19 @@ export default function ProfileUserType({ userType, profile }) {
             <ul>
               {waitlist.map((entry) => (
                 <li key={entry.id} className="waitlist-entry">
-                  <p><strong>Pet:</strong> {entry.pet_name}</p>
+                  <p>
+                    <strong>Pet:</strong> {entry.pet_name}
+                  </p>
                   {entry.pet_image && (
-                    <img src={entry.pet_image} alt={entry.pet_name} style={{ width: "100px" }} />
+                    <img
+                      src={entry.pet_image}
+                      alt={entry.pet_name}
+                      style={{ width: '100px' }}
+                    />
                   )}
-                  <p><strong>Breeder:</strong> {entry.breeder_name}</p>
+                  <p>
+                    <strong>Breeder:</strong> {entry.breeder_name}
+                  </p>
                 </li>
               ))}
             </ul>
@@ -117,7 +162,7 @@ export default function ProfileUserType({ userType, profile }) {
             <p>You have not joined any waitlist yet.</p>
           )}
         </div>
-      ) : userType === "unknown" ? (
+      ) : userType === 'unknown' ? (
         <div>No type</div>
       ) : (
         <div>Invalid user type</div>

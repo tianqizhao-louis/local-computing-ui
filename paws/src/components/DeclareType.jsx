@@ -1,47 +1,48 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import config from "../config";
-import { useAuth } from "../contexts/AuthProvider";
-import { Navigate } from "react-router-dom";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import config from '../config';
+import { useAuth } from '../contexts/AuthProvider';
+import { Navigate } from 'react-router-dom';
 
 export default function DeclareType() {
-  const [type, setType] = useState("customer");
+  const { jwtToken } = useAuth();
+  const [type, setType] = useState('customer');
   const { profile, setUserType } = useAuth();
 
   // Validation schemas
   const breederSchema = yup.object().shape({
     name: yup
       .string()
-      .required("Name is required")
-      .max(50, "Max 50 characters"),
+      .required('Name is required')
+      .max(50, 'Max 50 characters'),
     breeder_city: yup
       .string()
-      .required("Breeder city is required")
-      .max(100, "Max 100 characters"),
+      .required('Breeder city is required')
+      .max(100, 'Max 100 characters'),
     breeder_country: yup
       .string()
-      .required("Breeder country is required")
-      .max(100, "Max 100 characters"),
+      .required('Breeder country is required')
+      .max(100, 'Max 100 characters'),
     price_level: yup
       .string()
-      .required("Price level is required")
-      .max(50, "Max 50 characters"),
+      .required('Price level is required')
+      .max(50, 'Max 50 characters'),
     breeder_address: yup
       .string()
-      .required("Breeder address is required")
-      .max(255, "Max 255 characters"),
+      .required('Breeder address is required')
+      .max(255, 'Max 255 characters'),
   });
 
   const customerSchema = yup.object().shape({
     name: yup
       .string()
-      .required("Name is required")
-      .max(50, "Max 50 characters"),
+      .required('Name is required')
+      .max(50, 'Max 50 characters'),
   });
 
-  const validationSchema = type === "breeder" ? breederSchema : customerSchema;
+  const validationSchema = type === 'breeder' ? breederSchema : customerSchema;
 
   const {
     register,
@@ -51,16 +52,19 @@ export default function DeclareType() {
     resolver: yupResolver(validationSchema),
   });
 
+  const { setCustomerId } = useAuth();
+
   const onSubmit = async (data) => {
     try {
       const payload = { ...data, email: profile.email };
       const url =
-        type === "breeder" ? `${config.breederUrl}/` : `${config.customerUrl}/`;
+        type === 'breeder' ? `${config.breederUrl}/` : `${config.customerUrl}/`;
 
       const response = await fetch(url, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       });
@@ -71,10 +75,34 @@ export default function DeclareType() {
 
       setUserType(type);
 
+      if (type === 'customer') {
+        // Fetch and set customerId after successfully setting the user type
+        const customerResponse = await fetch(
+          `http://localhost:8001/api/v1/customers/email/${profile.email}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+
+        if (!customerResponse.ok) {
+          throw new Error(
+            `Failed to fetch customer ID: ${customerResponse.statusText}`,
+          );
+        }
+
+        const customerData = await customerResponse.json();
+        setCustomerId(customerData.id); // Update the customerId in context
+        console.log('Customer ID set:', customerData.id);
+      }
+
       <Navigate to="/" replace />;
     } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("There was an error submitting the form. Please try again.");
+      console.error('Error submitting form:', error);
+      alert('There was an error submitting the form. Please try again.');
     }
   };
 
@@ -101,10 +129,10 @@ export default function DeclareType() {
           <label className="label">Name</label>
           <div className="control">
             <input
-              className={`input ${errors.name ? "is-danger" : ""}`}
+              className={`input ${errors.name ? 'is-danger' : ''}`}
               type="text"
               placeholder="Enter name"
-              {...register("name")}
+              {...register('name')}
             />
           </div>
           {errors.name && (
@@ -113,16 +141,16 @@ export default function DeclareType() {
         </div>
 
         {/* Breeder-specific Fields */}
-        {type === "breeder" && (
+        {type === 'breeder' && (
           <>
             <div className="field">
               <label className="label">Breeder City</label>
               <div className="control">
                 <input
-                  className={`input ${errors.breeder_city ? "is-danger" : ""}`}
+                  className={`input ${errors.breeder_city ? 'is-danger' : ''}`}
                   type="text"
                   placeholder="Enter breeder city"
-                  {...register("breeder_city")}
+                  {...register('breeder_city')}
                 />
               </div>
               {errors.breeder_city && (
@@ -135,11 +163,11 @@ export default function DeclareType() {
               <div className="control">
                 <input
                   className={`input ${
-                    errors.breeder_country ? "is-danger" : ""
+                    errors.breeder_country ? 'is-danger' : ''
                   }`}
                   type="text"
                   placeholder="Enter breeder country"
-                  {...register("breeder_country")}
+                  {...register('breeder_country')}
                 />
               </div>
               {errors.breeder_country && (
@@ -154,8 +182,8 @@ export default function DeclareType() {
               <div className="control">
                 <div className="select">
                   <select
-                    className={`${errors.price_level ? "is-danger" : ""}`}
-                    {...register("price_level")}
+                    className={`${errors.price_level ? 'is-danger' : ''}`}
+                    {...register('price_level')}
                   >
                     <option value="">Select price level</option>
                     <option value="$">$</option>
@@ -174,11 +202,11 @@ export default function DeclareType() {
               <div className="control">
                 <input
                   className={`input ${
-                    errors.breeder_address ? "is-danger" : ""
+                    errors.breeder_address ? 'is-danger' : ''
                   }`}
                   type="text"
                   placeholder="Enter breeder address"
-                  {...register("breeder_address")}
+                  {...register('breeder_address')}
                 />
               </div>
               {errors.breeder_address && (

@@ -1,35 +1,54 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import config from "../config";
-import { useAuth } from "../contexts/AuthProvider";
-import DeclareType from "./DeclareType";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import config from '../config';
+import { useAuth } from '../contexts/AuthProvider';
+import DeclareType from './DeclareType';
 
 export default function Callback() {
+  const { jwtToken } = useAuth();
   const { profile, userType, setUserType } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserType = async () => {
       try {
-        const fetchBreeder = fetch(`${config.breederUrl}/email/${profile.email}/`);
-        const fetchCustomer = fetch(`${config.customerUrl}/email/${profile.email}/`);
+        const fetchBreeder = fetch(
+          `${config.breederUrl}/email/${profile.email}/`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${jwtToken}`, // Include your token here
+              'Content-Type': 'application/json', // Add other headers if necessary
+            },
+          },
+        );
 
+        const fetchCustomer = fetch(
+          `${config.customerUrl}/email/${profile.email}/`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${jwtToken}`, // Include your token here
+              'Content-Type': 'application/json', // Add other headers if necessary
+            },
+          },
+        );
         const [breederRes, customerRes] = await Promise.all([
           fetchBreeder,
           fetchCustomer,
         ]);
 
         if (breederRes.status === 200) {
-          setUserType("breeder");
-          navigate("/breeder");
+          setUserType('breeder');
+          navigate('/breeder');
         } else if (customerRes.status === 200) {
-          setUserType("customer");
-          navigate("/");
+          setUserType('customer');
+          navigate('/');
         } else {
-          setUserType("unknown");
+          setUserType('unknown');
         }
       } catch (error) {
-        setUserType("unknown");
+        setUserType('unknown');
         console.log(error);
       }
     };
@@ -39,7 +58,7 @@ export default function Callback() {
     }
   }, [profile?.email, setUserType, navigate]);
 
-  if (!userType || userType === "unknown") {
+  if (!userType || userType === 'unknown') {
     return <DeclareType />;
   }
 

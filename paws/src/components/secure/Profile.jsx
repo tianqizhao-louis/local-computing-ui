@@ -1,12 +1,13 @@
-import { useAuth } from "../../contexts/AuthProvider";
-import ProfileUserType from "./ProfileUserType";
-import { Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import config from "../../config";
+import { useAuth } from '../../contexts/AuthProvider';
+import ProfileUserType from './ProfileUserType';
+import { Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import config from '../../config';
 
 export const UserProfile = () => {
   const { profile, userType, setUserType } = useAuth();
   const [loading, setLoading] = useState(true);
+  const { jwtToken } = useAuth();
 
   useEffect(() => {
     const verifyUserType = async () => {
@@ -17,21 +18,42 @@ export const UserProfile = () => {
       }
 
       try {
+        const fetchBreeder = fetch(
+          `${config.breederUrl}/email/${profile.email}/`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${jwtToken}`, // Include your token here
+              'Content-Type': 'application/json', // Add other headers if necessary
+            },
+          },
+        );
+
+        const fetchCustomer = fetch(
+          `${config.customerUrl}/email/${profile.email}/`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${jwtToken}`, // Include your token here
+              'Content-Type': 'application/json', // Add other headers if necessary
+            },
+          },
+        );
         const [breederRes, customerRes] = await Promise.all([
-          fetch(`${config.breederUrl}/email/${profile.email}/`),
-          fetch(`${config.customerUrl}/email/${profile.email}/`),
+          fetchBreeder,
+          fetchCustomer,
         ]);
 
         if (breederRes.status === 200) {
-          setUserType("breeder");
+          setUserType('breeder');
         } else if (customerRes.status === 200) {
-          setUserType("customer");
+          setUserType('customer');
         } else {
-          setUserType("unknown");
+          setUserType('unknown');
         }
       } catch (error) {
-        console.error("Error verifying user type:", error);
-        setUserType("unknown");
+        console.error('Error verifying user type:', error);
+        setUserType('unknown');
       } finally {
         setLoading(false); // Ensure loading ends
       }
@@ -48,7 +70,7 @@ export const UserProfile = () => {
     );
   }
 
-  if (!userType || userType === "unknown") {
+  if (!userType || userType === 'unknown') {
     return <Navigate to="/callback" replace />;
   }
 
@@ -67,4 +89,3 @@ export const UserProfile = () => {
     </div>
   );
 };
-

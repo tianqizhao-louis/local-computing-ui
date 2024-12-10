@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import config from '../../config';
+import { useAuth } from '../../contexts/AuthProvider';
 
 export default function ProfileUserType({ userType, profile }) {
   const [data, setData] = useState({});
   const [waitlist, setWaitlist] = useState([]); // State for waitlist data
   const [loading, setLoading] = useState(true); // State for loading indicator
   const [error, setError] = useState(null); // State for error messages
+  const { jwtToken } = useAuth();
 
   // Fetch data based on userType
   useEffect(() => {
@@ -17,11 +19,19 @@ export default function ProfileUserType({ userType, profile }) {
         if (userType === 'breeder') {
           const response = await fetch(
             `${config.breederUrl}/email/${profile.email}/`,
+            {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${jwtToken}`, // Add Authorization header
+                'Content-Type': 'application/json', // Add Content-Type header
+              },
+            },
           );
-          if (!response.ok)
+          if (!response.ok) {
             throw new Error(
-              `Error fetching customer data: ${response.statusText}`,
+              `Error fetching breeder data: ${response.statusText}`,
             );
+          }
           const breederData = await response.json();
           setData(breederData);
         }
@@ -29,11 +39,19 @@ export default function ProfileUserType({ userType, profile }) {
         if (userType === 'customer') {
           const response = await fetch(
             `${config.customerUrl}/email/${profile.email}/`,
+            {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${jwtToken}`, // Add Authorization header
+                'Content-Type': 'application/json', // Add Content-Type header
+              },
+            },
           );
-          if (!response.ok)
+          if (!response.ok) {
             throw new Error(
               `Error fetching customer data: ${response.statusText}`,
             );
+          }
           const customerData = await response.json();
           setData(customerData);
 
@@ -41,6 +59,13 @@ export default function ProfileUserType({ userType, profile }) {
           if (customerData.id) {
             const waitlistResponse = await fetch(
               `${config.customerUrl}/${customerData.id}/waitlist`,
+              {
+                method: 'GET',
+                headers: {
+                  Authorization: `Bearer ${jwtToken}`, // Add Authorization header
+                  'Content-Type': 'application/json', // Add Content-Type header
+                },
+              },
             );
             if (!waitlistResponse.ok)
               throw new Error(

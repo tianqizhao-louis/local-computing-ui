@@ -9,6 +9,7 @@ export const BreederPage = () => {
   const [waitlist, setWaitlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { jwtToken } = useAuth();
 
   // New state for the pet form
   const [petForm, setPetForm] = useState({
@@ -25,6 +26,13 @@ export const BreederPage = () => {
         // Fetch breeder data by email
         const breederResponse = await fetch(
           `${config.breederUrl}/email/${profile.email}/`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${jwtToken}`, // Include your token here
+              'Content-Type': 'application/json', // Add other headers if necessary
+            },
+          },
         );
         if (!breederResponse.ok) {
           throw new Error('Failed to fetch breeder data');
@@ -35,6 +43,13 @@ export const BreederPage = () => {
         // Fetch pets data using the breeder ID directly from the API
         const petsResponse = await fetch(
           `${config.petUrl}/breeder/${breederData.id}/`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${jwtToken}`, // Include your token here
+              'Content-Type': 'application/json', // Add other headers if necessary
+            },
+          },
         );
         if (!petsResponse.ok) {
           throw new Error('Failed to fetch pets data');
@@ -45,9 +60,15 @@ export const BreederPage = () => {
         // Fetch waitlisted customers for the breeder
         const waitlistResponse = await fetch(
           `${config.customerUrl}/breeder/${breederData.id}/waitlist`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${jwtToken}`, // Include your token here
+              'Content-Type': 'application/json', // Add other headers if necessary
+            },
+          },
         );
 
-        console.log(`${config.customerUrl}/breeder/${breederData.id}/waitlist`);
         if (!waitlistResponse.ok) {
           throw new Error('Failed to fetch waitlist data');
         }
@@ -91,14 +112,17 @@ export const BreederPage = () => {
       if (petForm.imageUrl.trim()) {
         payload.image_url = petForm.imageUrl.trim(); // Include only if not empty
       }
-
-      const response = await fetch(`${config.petUrl}/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${config.breederUrl}/${breederData.id}/pets`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
         },
-        body: JSON.stringify(payload),
-      });
+      );
 
       if (!response.ok) {
         throw new Error('Failed to add pet');

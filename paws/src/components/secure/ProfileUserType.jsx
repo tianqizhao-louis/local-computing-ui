@@ -80,6 +80,13 @@ export default function ProfileUserType({ userType, profile }) {
                   // Fetch pet details
                   const petResponse = await fetch(
                     `${config.petUrl}/${entry.pet_id}/`,
+                    {
+                      method: 'GET',
+                      headers: {
+                        Authorization: `Bearer ${jwtToken}`, // Add Authorization header
+                        'Content-Type': 'application/json', // Add Content-Type header
+                      },
+                    },
                   );
                   if (!petResponse.ok)
                     throw new Error(
@@ -90,6 +97,13 @@ export default function ProfileUserType({ userType, profile }) {
                   // Fetch breeder details using breeder_id
                   const breederResponse = await fetch(
                     `${config.breederUrl}/${entry.breeder_id}/`,
+                    {
+                      method: 'GET',
+                      headers: {
+                        Authorization: `Bearer ${jwtToken}`, // Add Authorization header
+                        'Content-Type': 'application/json', // Add Content-Type header
+                      },
+                    },
                   );
                   if (!breederResponse.ok)
                     throw new Error(

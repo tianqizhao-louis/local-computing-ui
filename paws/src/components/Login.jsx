@@ -10,6 +10,7 @@ export default function Login() {
     try {
       const response = await fetch(`${config.customerUrl}/email/${email}`, {
         method: "GET",
+        mode: "cors",
         headers: {
           Authorization: `Bearer ${jwtToken}`, // Include your token here
           "Content-Type": "application/json", // Add other headers if necessary

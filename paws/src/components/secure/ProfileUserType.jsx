@@ -21,6 +21,7 @@ export default function ProfileUserType({ userType, profile }) {
             `${config.breederUrl}/email/${profile.email}/`,
             {
               method: 'GET',
+              mode: "cors",
               headers: {
                 Authorization: `Bearer ${jwtToken}`, // Add Authorization header
                 'Content-Type': 'application/json', // Add Content-Type header
@@ -41,6 +42,7 @@ export default function ProfileUserType({ userType, profile }) {
             `${config.customerUrl}/email/${profile.email}/`,
             {
               method: 'GET',
+              mode: "cors",
               headers: {
                 Authorization: `Bearer ${jwtToken}`, // Add Authorization header
                 'Content-Type': 'application/json', // Add Content-Type header
@@ -61,6 +63,7 @@ export default function ProfileUserType({ userType, profile }) {
               `${config.customerUrl}/${customerData.id}/waitlist`,
               {
                 method: 'GET',
+                mode: "cors",
                 headers: {
                   Authorization: `Bearer ${jwtToken}`, // Add Authorization header
                   'Content-Type': 'application/json', // Add Content-Type header
@@ -82,6 +85,7 @@ export default function ProfileUserType({ userType, profile }) {
                     `${config.petUrl}/${entry.pet_id}/`,
                     {
                       method: 'GET',
+                      mode: "cors",
                       headers: {
                         Authorization: `Bearer ${jwtToken}`, // Add Authorization header
                         'Content-Type': 'application/json', // Add Content-Type header
@@ -99,6 +103,7 @@ export default function ProfileUserType({ userType, profile }) {
                     `${config.breederUrl}/${entry.breeder_id}/`,
                     {
                       method: 'GET',
+                      mode: "cors",
                       headers: {
                         Authorization: `Bearer ${jwtToken}`, // Add Authorization header
                         'Content-Type': 'application/json', // Add Content-Type header

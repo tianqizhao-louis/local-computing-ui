@@ -10,11 +10,13 @@ const devConfig = {
 const prodConfig = {
   breederUrl:
     "https://breeder-661348528801.us-central1.run.app/api/v1/breeders",
-  customerUrl: "http://34.70.67.71:8081/api/v1/customers",
-  waitlistUrl: "http://34.70.67.71:8081/api/v1/customers",
+  customerUrl:
+    "https://customer-661348528801.us-central1.run.app/api/v1/customers",
+  waitlistUrl:
+    "https://customer-661348528801.us-central1.run.app/api/v1/customers",
   compositeUrl:
     "https://composite-661348528801.us-central1.run.app/api/v1/composites",
-  petUrl: "http://34.136.146.98:8082/api/v1/auth",
+  petUrl: "https://pet-661348528801.us-central1.run.app/api/v1/pets",
   authUrl: "https://composite-661348528801.us-central1.run.app/api/v1/auth",
 };
 

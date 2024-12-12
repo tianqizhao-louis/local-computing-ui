@@ -78,7 +78,7 @@ export default function DeclareType() {
       if (type === 'customer') {
         // Fetch and set customerId after successfully setting the user type
         const customerResponse = await fetch(
-          `http://localhost:8001/api/v1/customers/email/${profile.email}`,
+          `${config.customerUrl}/email/${profile.email}`,
           {
             method: 'GET',
             headers: {

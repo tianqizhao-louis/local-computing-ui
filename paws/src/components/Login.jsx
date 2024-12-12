@@ -1,5 +1,6 @@
-import { useAuth } from '../contexts/AuthProvider';
-import { Navigate } from 'react-router-dom';
+import { useAuth } from "../contexts/AuthProvider";
+import { Navigate } from "react-router-dom";
+import config from "../config";
 
 export default function Login() {
   const { profile, login, logOut, setCustomerId } = useAuth(); // Add setCustomerId from AuthProvider
@@ -7,25 +8,22 @@ export default function Login() {
 
   const fetchCustomerId = async (email) => {
     try {
-      const response = await fetch(
-        `http://localhost:8001/api/v1/customers/email/${email}`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${jwtToken}`, // Include your token here
-            'Content-Type': 'application/json', // Add other headers if necessary
-          },
+      const response = await fetch(`${config.customerUrl}/email/${email}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${jwtToken}`, // Include your token here
+          "Content-Type": "application/json", // Add other headers if necessary
         },
-      );
+      });
       if (!response.ok) {
         throw new Error(`Failed to fetch customer ID: ${response.statusText}`);
       }
 
       const data = await response.json();
       setCustomerId(data.id); // Store customer_id in context
-      console.log('Customer ID set:', data.id);
+      console.log("Customer ID set:", data.id);
     } catch (error) {
-      console.error('Error fetching customer ID:', error);
+      console.error("Error fetching customer ID:", error);
     }
   };
 

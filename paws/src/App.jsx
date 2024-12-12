@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useAuth } from './contexts/AuthProvider';
-import './App.css';
+import { useEffect, useState } from "react";
+import { useAuth } from "./contexts/AuthProvider";
+import "./App.css";
+import config from "../config";
 
 function App() {
   const [breeders, setBreeders] = useState([]); // Breeders list
   const [filteredBreeders, setFilteredBreeders] = useState([]); // Filtered breeders based on city/country
-  const [city, setCity] = useState('Any City');
-  const [country, setCountry] = useState('Any Country');
-  const [currentPage, setCurrentPage] = useState('home'); // Track current page
+  const [city, setCity] = useState("Any City");
+  const [country, setCountry] = useState("Any Country");
+  const [currentPage, setCurrentPage] = useState("home"); // Track current page
   const [selectedBreeder, setSelectedBreeder] = useState(null); // Track selected breeder
   const [pets, setPets] = useState([]); // Pets list
   const { jwtToken } = useAuth();
@@ -15,17 +16,17 @@ function App() {
   // Fetch data from the composite API
   const fetchData = (url, setState, serviceName) => {
     fetch(url, {
-      method: 'GET',
-      mode: 'cors',
+      method: "GET",
+      mode: "cors",
       headers: {
         Authorization: `Bearer ${jwtToken}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     })
       .then((response) => {
         if (!response.ok) {
           throw new Error(
-            `${serviceName} fetch failed: ${response.statusText}`,
+            `${serviceName} fetch failed: ${response.statusText}`
           );
         }
         return response.json();
@@ -42,11 +43,7 @@ function App() {
 
   useEffect(() => {
     const running_env = import.meta.env.MODE;
-    fetchData(
-      'http://localhost:8004/api/v1/composites',
-      setBreeders,
-      'Composites',
-    );
+    fetchData(`${config.compositeUrl}/`, setBreeders, "Composites");
 
     // if (running_env === "development") {
     //   fetchData("http://localhost:8084/api/v1/composites", setBreeders, "Composites");
@@ -66,13 +63,13 @@ function App() {
       filtered = [];
     }
 
-    if (city !== 'Any City') {
+    if (city !== "Any City") {
       filtered = filtered.filter((breeder) => breeder.breeder_city === city);
     }
 
-    if (country !== 'Any Country') {
+    if (country !== "Any Country") {
       filtered = filtered.filter(
-        (breeder) => breeder.breeder_country === country,
+        (breeder) => breeder.breeder_country === country
       );
     }
 
@@ -81,9 +78,9 @@ function App() {
 
   const handleSort = (criteria) => {
     const sorted = [...filteredBreeders].sort((a, b) => {
-      if (criteria === 'name') {
+      if (criteria === "name") {
         return a.name.localeCompare(b.name);
-      } else if (criteria === 'price') {
+      } else if (criteria === "price") {
         return a.price_level.localeCompare(b.price_level);
       }
       return 0;
@@ -93,18 +90,18 @@ function App() {
   };
 
   const handleReset = () => {
-    setCity('Any City');
-    setCountry('Any Country');
+    setCity("Any City");
+    setCountry("Any Country");
     setFilteredBreeders(breeders);
   };
 
   const showDetails = (breeder) => {
     setSelectedBreeder(breeder); // Store the selected breeder
-    setCurrentPage('details'); // Navigate to the detail page
+    setCurrentPage("details"); // Navigate to the detail page
   };
 
   const goBackToHome = () => {
-    setCurrentPage('home'); // Navigate back to the home page
+    setCurrentPage("home"); // Navigate back to the home page
   };
 
   return (
@@ -116,7 +113,7 @@ function App() {
       </header>
 
       <main>
-        {currentPage === 'home' ? (
+        {currentPage === "home" ? (
           <>
             <h2>Find Animals Near You</h2>
             <p>Bring Your New Best Friend Home.</p>
@@ -131,7 +128,7 @@ function App() {
                       <option key={idx} value={city}>
                         {city}
                       </option>
-                    ),
+                    )
                   )}
                 </select>
 
@@ -145,7 +142,7 @@ function App() {
                       <option key={idx} value={country}>
                         {country}
                       </option>
-                    ),
+                    )
                   )}
                 </select>
 
@@ -158,8 +155,8 @@ function App() {
               </div>
 
               <div className="sort-controls">
-                <button onClick={() => handleSort('name')}>Sort by Name</button>
-                <button onClick={() => handleSort('price')}>
+                <button onClick={() => handleSort("name")}>Sort by Name</button>
+                <button onClick={() => handleSort("price")}>
                   Sort by Price
                 </button>
               </div>
@@ -196,7 +193,7 @@ function BreederList({ breeders, showDetails }) {
             <li key={breeder.id}>
               <h3
                 onClick={() => showDetails(breeder)}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
               >
                 {breeder.name}
               </h3>
@@ -229,39 +226,39 @@ const BreederDetails = ({ breeder, pets, goBack }) => {
   // Function to join the waitlist
   const joinWaitlist = async (petId, breederId) => {
     if (!customerId) {
-      alert('Please log in first to join the waitlist.');
+      alert("Please log in first to join the waitlist.");
       return;
     }
 
     try {
-      console.log('Joining waitlist with:', { customerId, petId, breederId });
+      console.log("Joining waitlist with:", { customerId, petId, breederId });
       const response = await fetch(
-        `http://localhost:8001/api/v1/customers/${customerId}/waitlist`,
+        `${config.customerUrl}/${customerId}/waitlist`,
         {
-          method: 'POST',
+          method: "POST",
           headers: {
             Authorization: `Bearer ${jwtToken}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             pet_id: petId,
             breeder_id: breederId,
           }),
-        },
+        }
       );
 
       if (!response.ok) {
         const errorDetails = await response.text();
         throw new Error(
-          `Error: ${response.statusText}. Details: ${errorDetails}`,
+          `Error: ${response.statusText}. Details: ${errorDetails}`
         );
       }
 
       const data = await response.json();
-      console.log('Waitlist entry created:', data);
-      alert('Successfully joined the waitlist!');
+      console.log("Waitlist entry created:", data);
+      alert("Successfully joined the waitlist!");
     } catch (error) {
-      console.error('Failed to join the waitlist:', error);
+      console.error("Failed to join the waitlist:", error);
       alert(`Failed to join the waitlist. Details: ${error.message}`);
     }
   };
@@ -282,9 +279,9 @@ const BreederDetails = ({ breeder, pets, goBack }) => {
             <li
               key={pet.id}
               style={{
-                marginBottom: '20px',
-                display: 'flex',
-                alignItems: 'center',
+                marginBottom: "20px",
+                display: "flex",
+                alignItems: "center",
               }}
             >
               <div>
@@ -296,23 +293,23 @@ const BreederDetails = ({ breeder, pets, goBack }) => {
                     src={pet.image_url}
                     alt={pet.name}
                     style={{
-                      width: '150px',
-                      height: '150px',
-                      objectFit: 'cover',
+                      width: "150px",
+                      height: "150px",
+                      objectFit: "cover",
                     }}
                   />
                 )}
               </div>
-              <div style={{ marginLeft: '20px' }}>
+              <div style={{ marginLeft: "20px" }}>
                 <button
                   onClick={() => joinWaitlist(pet.id, breeder.id)}
                   style={{
-                    padding: '10px 20px',
-                    backgroundColor: '#4CAF50',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
+                    padding: "10px 20px",
+                    backgroundColor: "#4CAF50",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
                   }}
                 >
                   Join Waitlist

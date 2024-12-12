@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "./contexts/AuthProvider";
 import "./App.css";
-import config from "../config";
+import config from "./config";
 
 function App() {
   const [breeders, setBreeders] = useState([]); // Breeders list

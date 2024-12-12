@@ -1,0 +1,301 @@
+/* General Layout */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  display: flex;
+  flex-direction: column; /* Ensure vertical layout */
+  min-height: 100vh; /* Make sure the body takes up full screen height */
+}
+
+.container {
+  flex: 1; /* Allow the container to take up remaining space */
+  max-width: 100%;
+  padding: 20px;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+/* Header */
+.header-title {
+  background-color: #4caf50;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  z-index: 100; /* Ensure header stays on top */
+  position: relative;
+}
+
+.header-title h1 {
+  margin: 0;
+  font-size: 2.5em;
+}
+
+nav {
+  margin-top: 10px;
+}
+
+nav a {
+  margin: 0 10px;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Main Section */
+main {
+  flex: 1; /* Allow main content to take up the available space */
+  margin-top: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1; /* Keep content above background */
+}
+
+h2,
+h3 {
+  color: #333;
+}
+
+p {
+  font-size: 1.2em;
+  color: #555;
+}
+
+/* Filter and Sort Section */
+.filter-section {
+  margin-bottom: 20px;
+}
+
+.filter-controls,
+.sort-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+
+select,
+button {
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button.submit-btn {
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+}
+
+button.submit-btn:hover {
+  background-color: #45a049;
+}
+
+button.reset-btn {
+  background-color: #f44336;
+  color: white;
+  cursor: pointer;
+}
+
+button.reset-btn:hover {
+  background-color: #e53935;
+}
+
+/* Breeder List */
+.breeder-list ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.breeder-list li {
+  background-color: #fafafa;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  flex: 1 1 calc(33.333% - 20px);
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .breeder-list li {
+    flex: 1 1 calc(50% - 20px);
+  }
+}
+
+@media (max-width: 576px) {
+  .breeder-list li {
+    flex: 1 1 100%;
+  }
+}
+
+.breeder-list li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.breeder-list li h3 {
+  margin: 0;
+  color: #333;
+  cursor: pointer;
+}
+
+.breeder-list li p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.breeder-list li h3:hover {
+  color: #4caf50;
+  text-decoration: underline;
+}
+
+/* Breeder Details */
+.breeder-details {
+  text-align: center;
+}
+
+.breeder-details h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.breeder-details p {
+  font-size: 1.2em;
+  color: #555;
+  margin: 5px 0;
+}
+
+.breeder-details button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px;
+  font-size: 1em;
+}
+
+.breeder-details button:hover {
+  background-color: #45a049;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #4caf50;
+  color: white;
+  position: relative;
+  z-index: 100; /* Ensure footer stays on top */
+}
+
+footer p {
+  margin: 0;
+}
+
+/* Add these styles to your existing App.css */
+
+.breeder-info {
+  background-color: #fafafa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pets-list {
+  background-color: #fafafa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+}
+
+.pets-list ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.pets-list li {
+  background-color: white;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.pets-list h3 {
+  margin: 0 0 10px 0;
+  color: #4caf50;
+}
+
+.pets-list p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.profile-content {
+  background-color: #fafafa;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-details {
+  flex: 1;
+}
+
+.profile-details h3 {
+  margin-top: 0;
+  color: #4caf50;
+}
+
+@media (max-width: 576px) {
+  .profile-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 1.2em;
+  color: #666;
+}

@@ -1,8 +1,8 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
-import PropTypes from 'prop-types';
-import { useGoogleLogin, googleLogout } from '@react-oauth/google';
-import config from '../config';
+import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+import PropTypes from "prop-types";
+import { useGoogleLogin, googleLogout } from "@react-oauth/google";
+import config from "../config";
 
 // Create context
 const AuthContext = createContext(null);
@@ -26,21 +26,21 @@ export const AuthProvider = ({ children }) => {
         });
         const { access_token } = response.data;
         setJwtToken(access_token);
-        localStorage.setItem('jwtToken', access_token);
+        localStorage.setItem("jwtToken", access_token);
       } catch (error) {
-        console.error('Error retrieving JWT token:', error);
+        console.error("Error retrieving JWT token:", error);
       }
     },
-    onError: (error) => console.error('Login Failed:', error),
+    onError: (error) => console.error("Login Failed:", error),
   });
 
   useEffect(() => {
     try {
-      const savedUser = localStorage.getItem('user');
-      const savedProfile = localStorage.getItem('profile');
-      const savedUserType = localStorage.getItem('userType');
-      const savedCustomerId = localStorage.getItem('customerId');
-      const savedJwtToken = localStorage.getItem('jwtToken');
+      const savedUser = localStorage.getItem("user");
+      const savedProfile = localStorage.getItem("profile");
+      const savedUserType = localStorage.getItem("userType");
+      const savedCustomerId = localStorage.getItem("customerId");
+      const savedJwtToken = localStorage.getItem("jwtToken");
 
       if (savedUser) setUser(JSON.parse(savedUser));
       if (savedProfile) setProfile(JSON.parse(savedProfile));
@@ -50,29 +50,29 @@ export const AuthProvider = ({ children }) => {
 
       setLoading(false);
     } catch (error) {
-      console.error('Error initializing authentication state:', error);
+      console.error("Error initializing authentication state:", error);
       setLoading(false); // Ensure loading is turned off even on error
     }
   }, []);
 
   useEffect(() => {
     if (user?.access_token) {
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
       axios
         .get(
           `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
           {
             headers: {
               Authorization: `Bearer ${user.access_token}`,
-              Accept: 'application/json',
+              Accept: "application/json",
             },
-          },
+          }
         )
         .then((res) => {
           setProfile(res.data);
-          localStorage.setItem('profile', JSON.stringify(res.data));
+          localStorage.setItem("profile", JSON.stringify(res.data));
         })
-        .catch((err) => console.error('Error fetching user profile:', err));
+        .catch((err) => console.error("Error fetching user profile:", err));
     }
   }, [user]);
 
@@ -83,11 +83,11 @@ export const AuthProvider = ({ children }) => {
     setUserType(null);
     setCustomerId(null);
     setJwtToken(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('profile');
-    localStorage.removeItem('userType');
-    localStorage.removeItem('customerId');
-    localStorage.removeItem('jwtToken');
+    localStorage.removeItem("user");
+    localStorage.removeItem("profile");
+    localStorage.removeItem("userType");
+    localStorage.removeItem("customerId");
+    localStorage.removeItem("jwtToken");
   };
 
   const value = {
@@ -100,12 +100,12 @@ export const AuthProvider = ({ children }) => {
     userType,
     setUserType: (type) => {
       setUserType(type);
-      localStorage.setItem('userType', type);
+      localStorage.setItem("userType", type);
     },
     customerId,
     setCustomerId: (id) => {
       setCustomerId(id);
-      localStorage.setItem('customerId', id);
+      localStorage.setItem("customerId", id);
     },
     jwtToken,
   };
@@ -125,7 +125,7 @@ AuthProvider.propTypes = {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

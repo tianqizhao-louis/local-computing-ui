@@ -22,6 +22,7 @@ export const UserProfile = () => {
           `${config.breederUrl}/email/${profile.email}/`,
           {
             method: "GET",
+            mode: "cors",
             headers: {
               Authorization: `Bearer ${jwtToken}`, // Include your token here
               "Content-Type": "application/json", // Add other headers if necessary
@@ -33,6 +34,7 @@ export const UserProfile = () => {
           `${config.customerUrl}/email/${profile.email}/`,
           {
             method: "GET",
+            mode: "cors",
             headers: {
               Authorization: `Bearer ${jwtToken}`, // Include your token here
               "Content-Type": "application/json", // Add other headers if necessary

@@ -62,6 +62,7 @@ export default function DeclareType() {
 
       const response = await fetch(url, {
         method: 'POST',
+        mode: "cors",
         headers: {
           Authorization: `Bearer ${jwtToken}`,
           'Content-Type': 'application/json',
@@ -81,6 +82,7 @@ export default function DeclareType() {
           `${config.customerUrl}/email/${profile.email}`,
           {
             method: 'GET',
+            mode: "cors",
             headers: {
               Authorization: `Bearer ${jwtToken}`,
               'Content-Type': 'application/json',

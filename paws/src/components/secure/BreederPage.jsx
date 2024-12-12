@@ -28,6 +28,7 @@ export const BreederPage = () => {
           `${config.breederUrl}/email/${profile.email}/`,
           {
             method: 'GET',
+            mode: "cors",
             headers: {
               Authorization: `Bearer ${jwtToken}`, // Include your token here
               'Content-Type': 'application/json', // Add other headers if necessary
@@ -45,6 +46,7 @@ export const BreederPage = () => {
           `${config.petUrl}/breeder/${breederData.id}/`,
           {
             method: 'GET',
+            mode: "cors",
             headers: {
               Authorization: `Bearer ${jwtToken}`, // Include your token here
               'Content-Type': 'application/json', // Add other headers if necessary
@@ -62,6 +64,7 @@ export const BreederPage = () => {
           `${config.customerUrl}/breeder/${breederData.id}/waitlist`,
           {
             method: 'GET',
+            mode: "cors",
             headers: {
               Authorization: `Bearer ${jwtToken}`, // Include your token here
               'Content-Type': 'application/json', // Add other headers if necessary
@@ -116,6 +119,7 @@ export const BreederPage = () => {
         `${config.breederUrl}/${breederData.id}/pets`,
         {
           method: 'POST',
+          mode: "cors",
           headers: {
             Authorization: `Bearer ${jwtToken}`,
             'Content-Type': 'application/json',
